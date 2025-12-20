@@ -23,7 +23,9 @@ class HabitualApp extends StatelessWidget {
           ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(color: Color(0xFFE5E5EA)),
+            borderSide: const BorderSide(
+              color: Color.fromARGB(255, 193, 193, 219),
+            ),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:habit_tracker/homepage.dart';
+import 'package:habit_tracker/register.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -80,7 +82,12 @@ class LoginScreen extends StatelessWidget {
                   width: double.infinity,
                   height: 52,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (builder) => MainApp()),
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF2F80ED),
                       shape: RoundedRectangleBorder(
@@ -126,6 +133,36 @@ class LoginScreen extends StatelessWidget {
                       ],
                     ),
                     textAlign: TextAlign.center,
+                  ),
+                ),
+
+                const SizedBox(height: 24),
+                SizedBox(
+                  width: double.infinity,
+                  height: 52,
+                  child: OutlinedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const RegisterScreen(),
+                        ),
+                      );
+                    },
+                    style: OutlinedButton.styleFrom(
+                      side: const BorderSide(color: Color(0xFFE0E0E0)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: const Text(
+                      "Don't have an account? Register",
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                      ),
+                    ),
                   ),
                 ),
 
