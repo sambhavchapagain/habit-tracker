@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart'; // Import for date formatting
 
 void main() {
   runApp(const MyApp());
@@ -20,8 +21,25 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class CalendarStatsScreen extends StatelessWidget {
+class CalendarStatsScreen extends StatefulWidget {
   const CalendarStatsScreen({super.key});
+
+  @override
+  State<CalendarStatsScreen> createState() => _CalendarStatsScreenState();
+}
+
+class _CalendarStatsScreenState extends State<CalendarStatsScreen> {
+  // State variable to track the selected date (full DateTime object)
+  // Initialize to today's date for a practical start
+  DateTime _selectedDate = DateTime.now();
+
+  // State variable to track the month currently displayed in the calendar view
+  // Initialize to the first day of the current month
+  DateTime _focusedMonth = DateTime(
+    DateTime.now().year,
+    DateTime.now().month,
+    1,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -92,6 +110,31 @@ class CalendarStatsScreen extends StatelessWidget {
     );
   }
 
+  // Helper function to generate a list of DateTime objects for the given month
+  List<DateTime?> _getDaysInMonth(DateTime month) {
+    List<DateTime?> days = [];
+    final firstDayOfMonth = DateTime(month.year, month.month, 1);
+    // Get the number of days in the current month (e.g., for Dec 2025, it's 31)
+    final daysInMonth = DateTime(month.year, month.month + 1, 0).day;
+
+    // Calculate leading empty cells for days before the 1st of the month
+    // Dart's DateTime.weekday: Monday=1, ..., Sunday=7.
+    // To align with a calendar starting Sunday (0), Monday (1), ..., Saturday (6):
+    // The number of blanks is (firstDayOfMonth.weekday % 7).
+    // E.g., if Dec 1, 2025 is a Monday (weekday 1), (1 % 7) = 1 blank for Sunday.
+    // If Feb 1, 2026 is a Sunday (weekday 7), (7 % 7) = 0 blanks.
+    int leadingBlanks = firstDayOfMonth.weekday % 7;
+
+    for (int i = 0; i < leadingBlanks; i++) {
+      days.add(null); // Represents empty cells
+    }
+
+    for (int i = 1; i <= daysInMonth; i++) {
+      days.add(DateTime(month.year, month.month, i));
+    }
+    return days;
+  }
+
   Widget _buildCalendarCard() {
     final List<String> weekDays = [
       'Sun',
@@ -102,44 +145,9 @@ class CalendarStatsScreen extends StatelessWidget {
       'Fri',
       'Sat',
     ];
-    // Simplified logic for December 2025 (Starts on Monday)
-    final List<String> days = [
-      '',
-      '1',
-      '2',
-      '3',
-      '4',
-      '5',
-      '6',
-      '7',
-      '8',
-      '9',
-      '10',
-      '11',
-      '12',
-      '13',
-      '14',
-      '15',
-      '16',
-      '17',
-      '18',
-      '19',
-      '20',
-      '21',
-      '22',
-      '23',
-      '24',
-      '25',
-      '26',
-      '27',
-      '28',
-      '29',
-      '30',
-      '31',
-      '',
-      '',
-      '',
-    ];
+
+    // Dynamically generate the days for the _focusedMonth
+    final List<DateTime?> currentMonthDays = _getDaysInMonth(_focusedMonth);
 
     return Container(
       padding: const EdgeInsets.all(20),
@@ -162,22 +170,35 @@ class CalendarStatsScreen extends StatelessWidget {
               Row(
                 children: [
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      setState(() {
+                        // Decrement month by 1
+                        _focusedMonth = DateTime(
+                          _focusedMonth.year,
+                          _focusedMonth.month - 1,
+                          1,
+                        );
+                      });
+                    },
                     icon: const Icon(Icons.chevron_left),
                   ),
-                  const Column(
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'December',
-                        style: TextStyle(
+                        DateFormat(
+                          'MMMM',
+                        ).format(_focusedMonth), // Display current month
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       Text(
-                        '2025',
-                        style: TextStyle(
+                        DateFormat(
+                          'yyyy',
+                        ).format(_focusedMonth), // Display current year
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
@@ -185,13 +206,32 @@ class CalendarStatsScreen extends StatelessWidget {
                     ],
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      setState(() {
+                        // Increment month by 1
+                        _focusedMonth = DateTime(
+                          _focusedMonth.year,
+                          _focusedMonth.month + 1,
+                          1,
+                        );
+                      });
+                    },
                     icon: const Icon(Icons.chevron_right),
                   ),
                 ],
               ),
               OutlinedButton(
-                onPressed: () {},
+                onPressed: () {
+                  // Reset to today's date and focus the calendar on today's month
+                  setState(() {
+                    _selectedDate = DateTime.now();
+                    _focusedMonth = DateTime(
+                      _selectedDate.year,
+                      _selectedDate.month,
+                      1,
+                    );
+                  });
+                },
                 style: OutlinedButton.styleFrom(
                   side: const BorderSide(color: Colors.blue),
                   shape: RoundedRectangleBorder(
@@ -203,6 +243,7 @@ class CalendarStatsScreen extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 20),
+          // Weekday Headers
           GridView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -222,6 +263,7 @@ class CalendarStatsScreen extends StatelessWidget {
               ),
             ),
           ),
+          // Interactive Days Grid
           GridView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -230,24 +272,45 @@ class CalendarStatsScreen extends StatelessWidget {
               mainAxisSpacing: 5,
               crossAxisSpacing: 5,
             ),
-            itemCount: days.length,
+            itemCount:
+                currentMonthDays.length, // Use dynamically generated days
             itemBuilder: (context, index) {
-              bool isSelected = days[index] == '19';
-              return Container(
-                decoration: BoxDecoration(
-                  color: isSelected
-                      ? Colors.blue.withOpacity(0.1)
-                      : Colors.transparent,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Center(
-                  child: Text(
-                    days[index],
-                    style: TextStyle(
-                      fontWeight: isSelected
-                          ? FontWeight.bold
-                          : FontWeight.normal,
-                      color: isSelected ? Colors.blue : Colors.black87,
+              final DateTime? dayDate = currentMonthDays[index];
+              // Check if this day matches the selected date (year, month, and day)
+              final bool isSelected =
+                  dayDate != null &&
+                  dayDate.year == _selectedDate.year &&
+                  dayDate.month == _selectedDate.month &&
+                  dayDate.day == _selectedDate.day;
+
+              return InkWell(
+                onTap: dayDate == null
+                    ? null // Disable tap for empty cells
+                    : () {
+                        // Update state on tap
+                        setState(() {
+                          _selectedDate =
+                              dayDate; // Update selected date to the tapped date
+                        });
+                      },
+                borderRadius: BorderRadius.circular(10),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: isSelected ? Colors.blue : Colors.transparent,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Center(
+                    child: Text(
+                      dayDate == null
+                          ? ''
+                          : dayDate.day
+                                .toString(), // Display day number or empty string
+                      style: TextStyle(
+                        fontWeight: isSelected
+                            ? FontWeight.bold
+                            : FontWeight.normal,
+                        color: isSelected ? Colors.white : Colors.black87,
+                      ),
                     ),
                   ),
                 ),

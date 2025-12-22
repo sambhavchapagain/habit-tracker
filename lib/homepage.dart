@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:habit_tracker/add.dart' show CreateNewHabitScreen;
 import 'package:habit_tracker/calender.dart';
+// ignore: unused_import
+import 'package:habit_tracker/profile.dart';
 
 // ==================== Placeholder Screens ====================
 
@@ -152,8 +154,7 @@ class _MainAppState extends State<MainApp> {
     _screens = [
       const DashboardScreen(),
       const CalendarStatsScreen(),
-
-      const ProfileScreen(),
+      const ProfileScreen(), // ✅
     ];
   }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:habit_tracker/register.dart';
+import 'profile.dart';
 
 void main() => runApp(const HabitualApp());
 

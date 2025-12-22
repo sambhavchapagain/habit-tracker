@@ -11,7 +11,7 @@ class _CreateNewHabitScreenState extends State<CreateNewHabitScreen> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   TimeOfDay _reminderTime = const TimeOfDay(hour: 9, minute: 0);
-  Set<String> _selectedDays = {};
+  final Set<String> _selectedDays = {};
 
   final List<String> _daysOfWeek = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
   final List<String> _dayNames = [
