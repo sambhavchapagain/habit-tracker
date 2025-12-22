@@ -29,12 +29,8 @@ class CalendarStatsScreen extends StatefulWidget {
 }
 
 class _CalendarStatsScreenState extends State<CalendarStatsScreen> {
-  // State variable to track the selected date (full DateTime object)
-  // Initialize to today's date for a practical start
   DateTime _selectedDate = DateTime.now();
 
-  // State variable to track the month currently displayed in the calendar view
-  // Initialize to the first day of the current month
   DateTime _focusedMonth = DateTime(
     DateTime.now().year,
     DateTime.now().month,
@@ -110,19 +106,12 @@ class _CalendarStatsScreenState extends State<CalendarStatsScreen> {
     );
   }
 
-  // Helper function to generate a list of DateTime objects for the given month
   List<DateTime?> _getDaysInMonth(DateTime month) {
     List<DateTime?> days = [];
     final firstDayOfMonth = DateTime(month.year, month.month, 1);
     // Get the number of days in the current month (e.g., for Dec 2025, it's 31)
     final daysInMonth = DateTime(month.year, month.month + 1, 0).day;
 
-    // Calculate leading empty cells for days before the 1st of the month
-    // Dart's DateTime.weekday: Monday=1, ..., Sunday=7.
-    // To align with a calendar starting Sunday (0), Monday (1), ..., Saturday (6):
-    // The number of blanks is (firstDayOfMonth.weekday % 7).
-    // E.g., if Dec 1, 2025 is a Monday (weekday 1), (1 % 7) = 1 blank for Sunday.
-    // If Feb 1, 2026 is a Sunday (weekday 7), (7 % 7) = 0 blanks.
     int leadingBlanks = firstDayOfMonth.weekday % 7;
 
     for (int i = 0; i < leadingBlanks; i++) {

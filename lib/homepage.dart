@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:habit_tracker/add.dart' show CreateNewHabitScreen;
-import 'package:habit_tracker/calender.dart';
-// ignore: unused_import
-import 'package:habit_tracker/profile.dart';
-
-// ==================== Placeholder Screens ====================
 
 class CalendarScreen extends StatelessWidget {
   const CalendarScreen({super.key});
@@ -38,50 +33,6 @@ class CalendarScreen extends StatelessWidget {
     );
   }
 }
-
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Profile'),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
-        elevation: 0,
-      ),
-      body: const Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CircleAvatar(
-              radius: 60,
-              backgroundColor: Colors.blue,
-              child: Icon(Icons.person, size: 60, color: Colors.white),
-            ),
-            SizedBox(height: 24),
-            Text(
-              'Your Name',
-              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              'habitmaster@example.com',
-              style: TextStyle(color: Colors.grey),
-            ),
-            SizedBox(height: 32),
-            Text(
-              'Profile & Stats Coming Soon',
-              style: TextStyle(fontSize: 20, color: Colors.grey),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// ==================== Habit Detail Screen (from previous) ====================
 
 class HabitDetailScreen extends StatelessWidget {
   final Habit habit;
@@ -134,60 +85,6 @@ class HabitDetailScreen extends StatelessWidget {
 }
 
 // ==================== Main App with Bottom Navigation ====================
-
-class MainApp extends StatefulWidget {
-  const MainApp({super.key});
-
-  @override
-  State<MainApp> createState() => _MainAppState();
-}
-
-class _MainAppState extends State<MainApp> {
-  int _selectedIndex = 0;
-
-  // List of screens
-  late final List<Widget> _screens;
-
-  @override
-  void initState() {
-    super.initState();
-    _screens = [
-      const DashboardScreen(),
-      const CalendarStatsScreen(),
-      const ProfileScreen(), // ✅
-    ];
-  }
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: _screens[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.dashboard),
-            label: 'Dashboard',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_today),
-            label: 'Calendar',
-          ),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blue,
-        unselectedItemColor: Colors.grey,
-        onTap: _onItemTapped,
-      ),
-    );
-  }
-}
 
 // ==================== Dashboard Screen (updated) ====================
 
