@@ -206,7 +206,7 @@ class HabitItem extends StatelessWidget {
         trailing: Switch(
           value: habit.isCompleted,
           onChanged: (_) => onToggle(habit),
-          activeColor: const Color.fromARGB(255, 125, 194, 250),
+          activeThumbColor: const Color.fromARGB(255, 125, 194, 250),
         ),
       ),
     );
