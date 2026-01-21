@@ -1,4 +1,8 @@
+
 import 'package:flutter/material.dart';
+import 'package:habit_tracker/profile/setting.dart';
+
+
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -8,7 +12,7 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
 
-      // 🔹 AppBar
+      
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -19,23 +23,23 @@ class ProfileScreen extends StatelessWidget {
         title: const Text('Back', style: TextStyle(color: Colors.black)),
       ),
 
-      // 🔹 Body
+      
       body: SingleChildScrollView(
         child: Column(
           children: [
             const SizedBox(height: 20),
 
-            // 🔹 Profile Image
+            
             const CircleAvatar(
               radius: 55,
-              backgroundImage: NetworkImage(
-                'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d',
+              backgroundImage:AssetImage(
+              "assets/shambhav.jpg",
               ),
             ),
 
             const SizedBox(height: 12),
 
-            // 🔹 Name
+            
             const Text(
               'Alex Marshall',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
@@ -44,7 +48,8 @@ class ProfileScreen extends StatelessWidget {
             const SizedBox(height: 4),
 
             // 🔹 Username
-            const Text('@alex_marshall', style: TextStyle(color: Colors.grey)),
+            const Text('@alex_marshall',
+                style: TextStyle(color: Colors.grey)),
 
             const SizedBox(height: 18),
 
@@ -70,12 +75,12 @@ class ProfileScreen extends StatelessWidget {
             const SizedBox(height: 30),
 
             // 🔹 Menu Items
-            _menuItem(Icons.settings, 'Setting'),
-            _menuItem(Icons.person_outline, 'Friend'),
-            _menuItem(Icons.group_add_outlined, 'New Group'),
-            _menuItem(Icons.support_agent_outlined, 'Support'),
-            _menuItem(Icons.share_outlined, 'Share'),
-            _menuItem(Icons.info_outline, 'About us'),
+            _menuItem(Icons.settings, 'Setting', context),
+            _menuItem(Icons.person_outline, 'Friend', context),
+            _menuItem(Icons.group_add_outlined, 'New Group', context),
+            _menuItem(Icons.support_agent_outlined, 'Support', context),
+            _menuItem(Icons.share_outlined, 'Share', context),
+            _menuItem(Icons.info_outline, 'About us', context),
           ],
         ),
       ),
@@ -83,7 +88,7 @@ class ProfileScreen extends StatelessWidget {
   }
 
   // 🔹 Reusable Menu Item
-  Widget _menuItem(IconData icon, String title) {
+  Widget _menuItem(IconData icon, String title, BuildContext context) {
     return ListTile(
       leading: Icon(icon, color: Colors.black),
       title: Text(title, style: const TextStyle(fontSize: 16)),
@@ -92,7 +97,16 @@ class ProfileScreen extends StatelessWidget {
         size: 16,
         color: Colors.grey,
       ),
-      onTap: () {},
+      onTap: () {
+        if (title == 'Setting') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const SettingsScreen(),
+            ),
+          );
+        }
+      },
     );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CreateNewHabitScreen extends StatefulWidget {
-  const CreateNewHabitScreen({Key? key}) : super(key: key);
+  const CreateNewHabitScreen({super.key});
 
   @override
   State<CreateNewHabitScreen> createState() => _CreateNewHabitScreenState();
